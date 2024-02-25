@@ -1,0 +1,24 @@
+{% extends "base_mission.html" %}
+{% block content %}
+<h1>Работы на миссии на Марс</h1>
+<table border="3">
+    <tr>
+        <th>ID</th>
+        <th>Название работы</th>
+        <th>Ответственный</th>
+        <th>Продолжительность (часы)</th>
+        <th>Список ID команды</th>
+        <th>Завершена</th>
+    </tr>
+    {% for job in jobs %}
+    <tr>
+        <td>{{ job['id'] }}</td>
+        <td>{{ job['job_description'] }}</td>
+        <td>{{ job['team_leader_surname'] }} {{ job['team_leader_name'] }}</td>
+        <td>{{ job['work_size_hours'] }}</td>
+        <td>{{ job['collaborators'] | join(', ') }}</td>
+        <td>{% if job['is_finished'] %}Да{% else %}Нет{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
