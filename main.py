@@ -1,24 +1,22 @@
 from flask import Flask, render_template
+import sqlite3
 
 app = Flask(__name__)
 
-jobs = [
-    {
-        'id': 1,
-        'job_description': 'Deployment of residential modules 1 and 2 for the crew',
-        'team_leader_surname': 'Scott',
-        'team_leader_name': 'Ridley',
-        'work_size_hours': 15,
-        'collaborators': [2, 3],
-        'is_finished': False
-    },
-]
+
+def get_jobs_from_db():
+    conn = sqlite3.connect('db/mars_explorer.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM jobs")
+    jobs = cursor.fetchall()
+    conn.close()
+    return jobs
 
 
 @app.route('/')
 def display_jobs():
+    jobs = get_jobs_from_db()
     return render_template('jobs.html', jobs=jobs)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
